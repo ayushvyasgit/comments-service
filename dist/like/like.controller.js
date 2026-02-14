@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const like_service_1 = require("./like.service");
 const like_dto_1 = require("./dto/like.dto");
 const tenant_guard_1 = require("../common/guards/tenant.guard");
+const rate_limit_guard_1 = require("../common/guards/rate-limit.guard");
 const tenant_decorator_1 = require("../common/decorators/tenant.decorator");
 let LikeController = class LikeController {
     constructor(likeService) {
@@ -63,7 +64,7 @@ __decorate([
 ], LikeController.prototype, "getLikes", null);
 exports.LikeController = LikeController = __decorate([
     (0, common_1.Controller)('comments/:commentId/like'),
-    (0, common_1.UseGuards)(tenant_guard_1.TenantGuard),
+    (0, common_1.UseGuards)(tenant_guard_1.TenantGuard, rate_limit_guard_1.RateLimitGuard),
     __metadata("design:paramtypes", [like_service_1.LikeService])
 ], LikeController);
 //# sourceMappingURL=like.controller.js.map

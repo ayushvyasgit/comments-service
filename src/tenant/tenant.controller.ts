@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
 import { TenantService } from './tenant.service';
 import { CreateTenantDto } from './create-tenant.dto';
 
@@ -20,5 +20,13 @@ export class TenantController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.tenantService.findOne(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateData: any,
+  ) {
+    return this.tenantService.update(id, updateData);
   }
 }

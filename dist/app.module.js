@@ -13,6 +13,8 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const tenant_module_1 = require("./tenant/tenant.module");
 const comment_module_1 = require("./comment/comment.module");
 const like_module_1 = require("./like/like.module");
+const audit_module_1 = require("./audit/audit.module");
+const rate_limit_module_1 = require("./rate-limit/rate-limit.module");
 const health_controller_1 = require("./health.controller");
 let AppModule = class AppModule {
 };
@@ -22,6 +24,8 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             prisma_module_1.PrismaModule,
+            audit_module_1.AuditModule,
+            rate_limit_module_1.RateLimitModule,
             tenant_module_1.TenantModule,
             comment_module_1.CommentModule,
             like_module_1.LikeModule,

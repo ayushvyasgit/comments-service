@@ -8,18 +8,22 @@ import {
   Param,
   Query,
   UseGuards,
+  UseInterceptors,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from 'src/common/dto/update-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 import { QueryCommentDto } from './dto/query-comment.dto';
 import { TenantGuard } from '../common/guards/tenant.guard';
+import { RateLimitGuard } from '../common/guards/rate-limit.guard';
 import { GetTenant } from '../common/decorators/tenant.decorator';
+import { AuditInterceptor } from '../common/interceptors/audit.interceptor';
 
 @Controller('comments')
-@UseGuards(TenantGuard)
+@UseGuards(TenantGuard, RateLimitGuard)
+@UseInterceptors(AuditInterceptor)
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 

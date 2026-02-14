@@ -8,15 +8,15 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
-  Query,
 } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { LikeDto } from './dto/like.dto';
 import { TenantGuard } from '../common/guards/tenant.guard';
+import { RateLimitGuard } from '../common/guards/rate-limit.guard';
 import { GetTenant } from '../common/decorators/tenant.decorator';
 
 @Controller('comments/:commentId/like')
-@UseGuards(TenantGuard)
+@UseGuards(TenantGuard, RateLimitGuard)
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 

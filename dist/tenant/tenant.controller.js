@@ -29,6 +29,9 @@ let TenantController = class TenantController {
     async findOne(id) {
         return this.tenantService.findOne(id);
     }
+    async update(id, updateData) {
+        return this.tenantService.update(id, updateData);
+    }
 };
 exports.TenantController = TenantController;
 __decorate([
@@ -52,6 +55,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TenantController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], TenantController.prototype, "update", null);
 exports.TenantController = TenantController = __decorate([
     (0, common_1.Controller)('tenants'),
     __metadata("design:paramtypes", [tenant_service_1.TenantService])

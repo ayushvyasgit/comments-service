@@ -16,10 +16,12 @@ exports.CommentController = void 0;
 const common_1 = require("@nestjs/common");
 const comment_service_1 = require("./comment.service");
 const create_comment_dto_1 = require("./dto/create-comment.dto");
-const update_comment_dto_1 = require("../common/dto/update-comment.dto");
+const update_comment_dto_1 = require("./dto/update-comment.dto");
 const query_comment_dto_1 = require("./dto/query-comment.dto");
 const tenant_guard_1 = require("../common/guards/tenant.guard");
+const rate_limit_guard_1 = require("../common/guards/rate-limit.guard");
 const tenant_decorator_1 = require("../common/decorators/tenant.decorator");
+const audit_interceptor_1 = require("../common/interceptors/audit.interceptor");
 let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
@@ -86,7 +88,8 @@ __decorate([
 ], CommentController.prototype, "remove", null);
 exports.CommentController = CommentController = __decorate([
     (0, common_1.Controller)('comments'),
-    (0, common_1.UseGuards)(tenant_guard_1.TenantGuard),
+    (0, common_1.UseGuards)(tenant_guard_1.TenantGuard, rate_limit_guard_1.RateLimitGuard),
+    (0, common_1.UseInterceptors)(audit_interceptor_1.AuditInterceptor),
     __metadata("design:paramtypes", [comment_service_1.CommentService])
 ], CommentController);
 //# sourceMappingURL=comment.controller.js.map

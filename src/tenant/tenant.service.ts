@@ -8,7 +8,6 @@ export class TenantService {
   constructor(private prisma: PrismaService) {}
 
   async create(createTenantDto: CreateTenantDto) {
-    // Check if subdomain exists
     const existing = await this.prisma.tenant.findUnique({
       where: { subdomain: createTenantDto.subdomain },
     });
@@ -17,11 +16,9 @@ export class TenantService {
       throw new ConflictException('Subdomain already exists');
     }
 
-    // Generate API key
     const apiKey = this.generateApiKey();
     const hashedApiKey = this.hashApiKey(apiKey);
 
-    // Create tenant
     const tenant = await this.prisma.tenant.create({
       data: {
         ...createTenantDto,
@@ -29,10 +26,9 @@ export class TenantService {
       },
     });
 
-    // Return with unhashed API key (only time user sees it)
     return {
       ...tenant,
-      apiKey, // Original key for user to save
+      apiKey,
     };
   }
 
@@ -60,6 +56,17 @@ export class TenantService {
     return this.prisma.tenant.findUnique({
       where: { apiKey: hashedKey },
     });
+  }
+
+  async update(id: string, updateData: any) {
+    await this.findOne(id);
+
+    const tenant = await this.prisma.tenant.update({
+      where: { id },
+      data: updateData,
+    });
+
+    return tenant;
   }
 
   private generateApiKey(): string {

@@ -6,8 +6,8 @@ export declare class TenantService {
     create(createTenantDto: CreateTenantDto): Promise<{
         apiKey: string;
         id: string;
-        subdomain: string;
         name: string;
+        subdomain: string;
         plan: import(".prisma/client").$Enums.Plan;
         status: import(".prisma/client").$Enums.TenantStatus;
         rateLimitPerMinute: number;
@@ -17,9 +17,9 @@ export declare class TenantService {
     }>;
     findAll(): Promise<{
         id: string;
+        name: string;
         subdomain: string;
         apiKey: string;
-        name: string;
         plan: import(".prisma/client").$Enums.Plan;
         status: import(".prisma/client").$Enums.TenantStatus;
         rateLimitPerMinute: number;
@@ -29,9 +29,9 @@ export declare class TenantService {
     }[]>;
     findOne(id: string): Promise<{
         id: string;
+        name: string;
         subdomain: string;
         apiKey: string;
-        name: string;
         plan: import(".prisma/client").$Enums.Plan;
         status: import(".prisma/client").$Enums.TenantStatus;
         rateLimitPerMinute: number;
@@ -41,9 +41,21 @@ export declare class TenantService {
     }>;
     findByApiKey(apiKey: string): Promise<{
         id: string;
+        name: string;
         subdomain: string;
         apiKey: string;
+        plan: import(".prisma/client").$Enums.Plan;
+        status: import(".prisma/client").$Enums.TenantStatus;
+        rateLimitPerMinute: number;
+        rateLimitPerHour: number;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    update(id: string, updateData: any): Promise<{
+        id: string;
         name: string;
+        subdomain: string;
+        apiKey: string;
         plan: import(".prisma/client").$Enums.Plan;
         status: import(".prisma/client").$Enums.TenantStatus;
         rateLimitPerMinute: number;

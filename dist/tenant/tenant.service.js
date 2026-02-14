@@ -91,6 +91,14 @@ let TenantService = class TenantService {
             where: { apiKey: hashedKey },
         });
     }
+    async update(id, updateData) {
+        await this.findOne(id);
+        const tenant = await this.prisma.tenant.update({
+            where: { id },
+            data: updateData,
+        });
+        return tenant;
+    }
     generateApiKey() {
         const randomBytes = crypto.randomBytes(32).toString('hex');
         return `tenant_${randomBytes}`;

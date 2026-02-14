@@ -23,6 +23,7 @@ model Tenant {
   
   comments  Comment[]
   likes     Like[]
+  auditLogs AuditLog[]
   
   @@map("tenants")
 }
@@ -102,4 +103,48 @@ model Like {
   @@index([tenantId, commentId])
   @@index([userId])
   @@map("likes")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  
+  tenantId    String   @map("tenant_id") @db.Uuid
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  action      AuditAction
+  resource    String
+  resourceId  String?  @map("resource_id")
+  
+  userId      String?  @map("user_id")
+  userName    String?  @map("user_name")
+  
+  method      String?
+  path        String?
+  
+  metadata    Json     @default("{}")
+  
+  success     Boolean  @default(true)
+  errorMessage String? @map("error_message")
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  @@index([tenantId, action, createdAt])
+  @@index([tenantId, resource, createdAt])
+  @@index([tenantId, userId, createdAt])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+enum AuditAction {
+  COMMENT_CREATED
+  COMMENT_UPDATED
+  COMMENT_DELETED
+  COMMENT_VIEWED
+  COMMENT_LIKED
+  COMMENT_UNLIKED
+  TENANT_CREATED
+  TENANT_UPDATED
+  AUTH_SUCCESS
+  AUTH_FAILED
+  RATE_LIMIT_EXCEEDED
 }
