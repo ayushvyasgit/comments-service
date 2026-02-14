@@ -6,23 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.TenantModule = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
-const prisma_module_1 = require("./prisma/prisma.module");
-const tenant_module_1 = require("./tenant/tenant.module");
-const health_controller_1 = require("./health.controller");
-let AppModule = class AppModule {
+const tenant_service_1 = require("./tenant.service");
+const tenant_controller_1 = require("./tenant.controller");
+let TenantModule = class TenantModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.TenantModule = TenantModule;
+exports.TenantModule = TenantModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            config_1.ConfigModule.forRoot({ isGlobal: true }),
-            prisma_module_1.PrismaModule,
-            tenant_module_1.TenantModule,
-        ],
-        controllers: [health_controller_1.HealthController],
+        controllers: [tenant_controller_1.TenantController],
+        providers: [tenant_service_1.TenantService],
+        exports: [tenant_service_1.TenantService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], TenantModule);
+//# sourceMappingURL=tenant.module.js.map
