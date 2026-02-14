@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const prisma_module_1 = require("./prisma/prisma.module");
 const tenant_module_1 = require("./tenant/tenant.module");
+const comment_module_1 = require("./comment/comment.module");
 const health_controller_1 = require("./health.controller");
 let AppModule = class AppModule {
 };
@@ -21,6 +22,7 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             prisma_module_1.PrismaModule,
             tenant_module_1.TenantModule,
+            comment_module_1.CommentModule,
         ],
         controllers: [health_controller_1.HealthController],
     })

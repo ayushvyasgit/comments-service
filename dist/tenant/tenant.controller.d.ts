@@ -5,28 +5,37 @@ export declare class TenantController {
     constructor(tenantService: TenantService);
     create(createTenantDto: CreateTenantDto): Promise<{
         apiKey: string;
-        name: string;
-        subdomain: string;
         id: string;
-        status: string;
+        subdomain: string;
+        name: string;
+        plan: import(".prisma/client").$Enums.Plan;
+        status: import(".prisma/client").$Enums.TenantStatus;
+        rateLimitPerMinute: number;
+        rateLimitPerHour: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
     findAll(): Promise<{
-        name: string;
-        subdomain: string;
         id: string;
+        subdomain: string;
         apiKey: string;
-        status: string;
+        name: string;
+        plan: import(".prisma/client").$Enums.Plan;
+        status: import(".prisma/client").$Enums.TenantStatus;
+        rateLimitPerMinute: number;
+        rateLimitPerHour: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
-        name: string;
-        subdomain: string;
         id: string;
+        subdomain: string;
         apiKey: string;
-        status: string;
+        name: string;
+        plan: import(".prisma/client").$Enums.Plan;
+        status: import(".prisma/client").$Enums.TenantStatus;
+        rateLimitPerMinute: number;
+        rateLimitPerHour: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
