@@ -22,6 +22,7 @@ model Tenant {
   updatedAt DateTime @updatedAt @map("updated_at")
   
   comments  Comment[]
+  likes     Like[]
   
   @@map("tenants")
 }
@@ -69,6 +70,8 @@ model Comment {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
   
+  likes       Like[]
+  
   @@index([tenantId, entityId, createdAt])
   @@index([tenantId, parentId])
   @@index([tenantId, status])
@@ -80,4 +83,23 @@ enum CommentStatus {
   DELETED
   FLAGGED
   SPAM
+}
+
+model Like {
+  id        String   @id @default(uuid()) @db.Uuid
+  
+  tenantId  String   @map("tenant_id") @db.Uuid
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  commentId String   @map("comment_id") @db.Uuid
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  
+  userId    String   @map("user_id")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  @@unique([tenantId, commentId, userId])
+  @@index([tenantId, commentId])
+  @@index([userId])
+  @@map("likes")
 }

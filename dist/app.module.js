@@ -12,6 +12,7 @@ const config_1 = require("@nestjs/config");
 const prisma_module_1 = require("./prisma/prisma.module");
 const tenant_module_1 = require("./tenant/tenant.module");
 const comment_module_1 = require("./comment/comment.module");
+const like_module_1 = require("./like/like.module");
 const health_controller_1 = require("./health.controller");
 let AppModule = class AppModule {
 };
@@ -23,6 +24,7 @@ exports.AppModule = AppModule = __decorate([
             prisma_module_1.PrismaModule,
             tenant_module_1.TenantModule,
             comment_module_1.CommentModule,
+            like_module_1.LikeModule,
         ],
         controllers: [health_controller_1.HealthController],
     })
