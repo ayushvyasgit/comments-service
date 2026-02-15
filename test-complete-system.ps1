@@ -1,10 +1,4 @@
-# ============================================================================
-# COMPLETE SYSTEM TEST - Comments Service
-# ============================================================================
 
-Write-Host "=============================================================" -ForegroundColor Cyan
-Write-Host "        COMMENTS SERVICE - COMPLETE SYSTEM TEST" -ForegroundColor Cyan
-Write-Host "=============================================================" -ForegroundColor Cyan
 
 $baseUrl = "http://localhost:3000"
 $testsRun = 0
@@ -18,39 +12,25 @@ function Test-Endpoint {
     )
 
     $script:testsRun++
-    Write-Host "`n[$testsRun] Testing: $Name" -ForegroundColor Yellow
 
     try {
         & $Test
         $script:testsPassed++
-        Write-Host "PASS" -ForegroundColor Green
     } catch {
         $script:testsFailed++
-        Write-Host "FAIL: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "FAIL: $Name"
     }
 }
 
-# ============================================================================
-# PHASE 1: HEALTH CHECKS
-# ============================================================================
-
-Write-Host "`n================ PHASE 1: HEALTH CHECKS =================" -ForegroundColor Cyan
-
-Test-Endpoint "Application health check" {
+Test-Endpoint "Health" {
     $response = Invoke-RestMethod "$($baseUrl)/health"
-    if ($response.status -ne "ok") { throw "Health check failed" }
+    if ($response.status -ne "ok") { throw "Health failed" }
 }
 
-Test-Endpoint "Database connectivity" {
+Test-Endpoint "Database" {
     $response = Invoke-RestMethod "$($baseUrl)/health/db"
-    if ($response.database -ne "connected") { throw "Database not connected" }
+    if ($response.database -ne "connected") { throw "DB failed" }
 }
-
-# ============================================================================
-# PHASE 2: TENANTS & AUTH
-# ============================================================================
-
-Write-Host "`n================ PHASE 2: TENANTS & AUTH =================" -ForegroundColor Cyan
 
 $tenant1 = $null
 $apiKey1 = $null
@@ -68,41 +48,31 @@ Test-Endpoint "Create Tenant 1" {
 
     $script:tenant1 = $response
     $script:apiKey1 = $response.apiKey
-
-    if (!$apiKey1) { throw "API key not generated" }
+    if (!$apiKey1) { throw "No API key" }
 }
 
-Test-Endpoint "Valid API Key Works" {
+Test-Endpoint "Valid API" {
     $response = Invoke-RestMethod `
         "$($baseUrl)/test/protected" `
         -Headers @{"X-API-Key" = $apiKey1}
-
     if (!$response.message) { throw "Auth failed" }
 }
 
-Test-Endpoint "Invalid API Key Rejected" {
+Test-Endpoint "Invalid API" {
     try {
         Invoke-RestMethod `
             "$($baseUrl)/test/protected" `
             -Headers @{"X-API-Key" = "invalid"}
-        throw "Invalid key accepted"
+        throw "Accepted invalid"
     } catch {
-        if ($_.Exception.Response.StatusCode.value__ -ne 401) {
-            throw "Wrong status code"
-        }
+        if ($_.Exception.Response.StatusCode.value__ -ne 401) { throw "Wrong status" }
     }
 }
-
-# ============================================================================
-# PHASE 3: COMMENTS
-# ============================================================================
-
-Write-Host "`n================ PHASE 3: COMMENTS =================" -ForegroundColor Cyan
 
 $comment1 = $null
 $comment2 = $null
 
-Test-Endpoint "Create root comment" {
+Test-Endpoint "Create Comment" {
     $response = Invoke-RestMethod `
         -Uri "$($baseUrl)/comments" `
         -Method POST `
@@ -119,7 +89,7 @@ Test-Endpoint "Create root comment" {
     if ($response.depth -ne 0) { throw "Wrong depth" }
 }
 
-Test-Endpoint "Create reply" {
+Test-Endpoint "Create Reply" {
     $response = Invoke-RestMethod `
         -Uri "$($baseUrl)/comments" `
         -Method POST `
@@ -137,18 +107,11 @@ Test-Endpoint "Create reply" {
     if ($response.depth -ne 1) { throw "Wrong nested depth" }
 }
 
-Test-Endpoint "Pagination works" {
+Test-Endpoint "Pagination" {
     $url = "$($baseUrl)/comments?entityId=post-test-123&page=1&limit=1"
     $response = Invoke-RestMethod $url -Headers @{"X-API-Key" = $apiKey1}
-
     if ($response.data.Count -ne 1) { throw "Pagination failed" }
 }
-
-# ============================================================================
-# PHASE 4: MULTI-TENANT ISOLATION
-# ============================================================================
-
-Write-Host "`n================ PHASE 4: MULTI-TENANT =================" -ForegroundColor Cyan
 
 $tenant2 = $null
 $apiKey2 = $null
@@ -168,35 +131,15 @@ Test-Endpoint "Create Tenant 2" {
     $script:apiKey2 = $response.apiKey
 }
 
-Test-Endpoint "Tenant isolation enforced" {
+Test-Endpoint "Isolation" {
     try {
         Invoke-RestMethod `
             "$($baseUrl)/comments/$($comment1.id)" `
             -Headers @{"X-API-Key" = $apiKey2}
-        throw "Cross-tenant access allowed"
+        throw "Cross access"
     } catch {
-        if ($_.Exception.Response.StatusCode.value__ -ne 404) {
-            throw "Wrong status code"
-        }
+        if ($_.Exception.Response.StatusCode.value__ -ne 404) { throw "Wrong status" }
     }
 }
 
-# ============================================================================
-# FINAL RESULTS
-# ============================================================================
-
-Write-Host "`n================ TEST RESULTS =================" -ForegroundColor Cyan
-Write-Host "Tests Run: $testsRun"
-Write-Host "Passed: $testsPassed" -ForegroundColor Green
-Write-Host "Failed: $testsFailed" -ForegroundColor Red
-
-$successRate = [math]::Round(($testsPassed / $testsRun) * 100, 2)
-Write-Host "Success Rate: $successRate %"
-
-if ($testsFailed -eq 0) {
-    Write-Host "`nALL TESTS PASSED - SYSTEM STABLE" -ForegroundColor Green
-} else {
-    Write-Host "`nSome tests failed - Review output above" -ForegroundColor Yellow
-}
-
-Write-Host "=============================================================" -ForegroundColor Cyan
+Write-Host "Run:$testsRun Pass:$testsPassed Fail:$testsFailed"

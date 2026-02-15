@@ -16,7 +16,6 @@ export class AuditInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest();
     const { method, url, tenant } = request;
 
-    // Only audit if tenant exists (authenticated requests)
     if (!tenant) {
       return next.handle();
     }

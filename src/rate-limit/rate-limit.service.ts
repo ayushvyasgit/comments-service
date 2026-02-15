@@ -30,7 +30,6 @@ export class RateLimitService {
       windowStart.setMinutes(0, 0, 0);
     }
 
-    // Count requests in current window from audit logs
     const count = await this.prisma.auditLog.count({
       where: {
         tenantId,
@@ -48,7 +47,6 @@ export class RateLimitService {
   }
 
   async incrementCounter(tenantId: string) {
-    // This is handled automatically by audit logging
     return true;
   }
 }

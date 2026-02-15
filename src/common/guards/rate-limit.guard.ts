@@ -22,16 +22,14 @@ export class RateLimitGuard implements CanActivate {
     const tenant = request.tenant;
 
     if (!tenant) {
-      return true; // No tenant, no rate limiting
+      return true; 
     }
 
-    // Check minute rate limit
     const minuteCheck = await this.rateLimitService.checkRateLimit(
       tenant.id,
       'minute',
     );
 
-    // Always add rate limit headers
     response.header('X-RateLimit-Limit', minuteCheck.limit.toString());
     response.header('X-RateLimit-Remaining', minuteCheck.remaining.toString());
     response.header('X-RateLimit-Window', 'minute');
