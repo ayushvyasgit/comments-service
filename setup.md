@@ -88,6 +88,8 @@ cd C:\path\to\comments-service
 
 # Or if you cloned from Git
 git clone <repository-url>
+
+# here  git clone https://github.com/ayushvyasgit/comments-service.git
 cd comments-service
 ```
 
@@ -98,6 +100,12 @@ cd comments-service
 ```powershell
 npm install
 ```
+
+# for nest  setup locally ##
+
+npm i -g @nestjs/cli
+nest new project-name
+
 
 **Expected Output:**
 ```

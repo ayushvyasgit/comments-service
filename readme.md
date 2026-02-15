@@ -270,7 +270,6 @@ The service starts on port 3000 by default. Create your first tenant by posting 
 Additional documentation:
 - SETUP_INSTRUCTIONS.md: Step-by-step installation guide
 - UNIT_TEST_DOCUMENTATION.md: Complete test suite documentation
-- API endpoints documented inline with controller methods
 
 For production deployment, ensure proper monitoring, backup strategies, and disaster recovery procedures are in place. Consider using managed database services for automatic backups and high availability.
 
