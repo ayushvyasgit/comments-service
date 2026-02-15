@@ -23,17 +23,17 @@ export declare class AuditService {
         limit?: number;
     }): Promise<{
         id: string;
+        createdAt: Date;
         tenantId: string;
+        path: string | null;
         action: import(".prisma/client").$Enums.AuditAction;
         resource: string;
         resourceId: string | null;
         userId: string | null;
         userName: string | null;
         method: string | null;
-        path: string | null;
         metadata: import("@prisma/client/runtime/library").JsonValue;
         success: boolean;
         errorMessage: string | null;
-        createdAt: Date;
     }[]>;
 }

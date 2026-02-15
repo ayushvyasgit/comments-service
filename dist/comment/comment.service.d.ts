@@ -19,9 +19,12 @@ export declare class CommentService {
         tenantId: string;
         depth: number;
         path: string;
+        authorRole: import(".prisma/client").$Enums.UserRole;
         likeCount: number;
         replyCount: number;
         deletedAt: Date | null;
+        deletedBy: string | null;
+        deletedByRole: import(".prisma/client").$Enums.UserRole | null;
     }>;
     findAll(tenantId: string, query: QueryCommentDto): Promise<{
         data: {
@@ -38,9 +41,12 @@ export declare class CommentService {
             tenantId: string;
             depth: number;
             path: string;
+            authorRole: import(".prisma/client").$Enums.UserRole;
             likeCount: number;
             replyCount: number;
             deletedAt: Date | null;
+            deletedBy: string | null;
+            deletedByRole: import(".prisma/client").$Enums.UserRole | null;
         }[];
         meta: {
             page: number;
@@ -63,9 +69,12 @@ export declare class CommentService {
         tenantId: string;
         depth: number;
         path: string;
+        authorRole: import(".prisma/client").$Enums.UserRole;
         likeCount: number;
         replyCount: number;
         deletedAt: Date | null;
+        deletedBy: string | null;
+        deletedByRole: import(".prisma/client").$Enums.UserRole | null;
     }>;
     update(tenantId: string, id: string, updateCommentDto: UpdateCommentDto): Promise<{
         id: string;
@@ -81,9 +90,12 @@ export declare class CommentService {
         tenantId: string;
         depth: number;
         path: string;
+        authorRole: import(".prisma/client").$Enums.UserRole;
         likeCount: number;
         replyCount: number;
         deletedAt: Date | null;
+        deletedBy: string | null;
+        deletedByRole: import(".prisma/client").$Enums.UserRole | null;
     }>;
     remove(tenantId: string, id: string): Promise<{
         message: string;

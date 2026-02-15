@@ -5,12 +5,12 @@ export declare class AuditController {
     getLogs(tenantId: string, action?: string, resource?: string, userId?: string, limit?: string): Promise<{
         id: string;
         createdAt: Date;
-        path: string | null;
         tenantId: string;
-        userId: string | null;
+        path: string | null;
         action: import(".prisma/client").$Enums.AuditAction;
         resource: string;
         resourceId: string | null;
+        userId: string | null;
         userName: string | null;
         method: string | null;
         metadata: import("@prisma/client/runtime/library").JsonValue;
